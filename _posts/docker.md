@@ -45,4 +45,32 @@ docker-compose rm -f cxxhost
 docker-compose up --no-deps -d cxxhost
 
 docker run -it --rm -v ~/dev/dizao/server/sacs_parser_builder/sacs_parser:/usr/src/app sacs_parser_builder bash
+
+docker logs -f dizao_api_1
+docker-compose restart api
+docker-compose stop api
+docker kill d768cabb9bcc
+docker ps
+docker-compose rm -f api
+docker image ls
+docker system df
+docker image prune
+docker image ls
+docker image ls -a
+
+```
+
+## Dockerfile sample
+
+```console
+FROM node:latest
+# Create app directory
+RUN mkdir -p /usr/src/app \
+    && apt-get update \
+    && apt-get install -y cmake
+
+WORKDIR /usr/src/app
+
+VOLUME /usr/src/app
+CMD [ "/usr/src/app/make.sh" ]
 ```
