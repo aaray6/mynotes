@@ -1,5 +1,5 @@
 ---
-title: hexo
+title: Hexo notes
 date: 2018-02-27 23:22:57
 tags:
 ---

@@ -1,5 +1,5 @@
 ---
-title: cmake
+title: cmake notes
 date: 2018-02-27 22:00:17
 tags:
 ---

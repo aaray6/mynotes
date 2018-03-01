@@ -1,5 +1,5 @@
 ---
-title: git
+title: git notes
 date: 2018-02-27 23:04:10
 tags:
 ---
@@ -31,4 +31,11 @@ git remote set-url origin <remote-URL>
 
 ```console
 git push *
+```
+
+## GIT CRLF
+
+```console
+git config core.autocrlf
+git config --global core.autocrlf false
 ```

@@ -1,5 +1,5 @@
 ---
-title: lubuntu_eeepc901
+title: install lubuntu on eeepc901
 date: 2018-02-24 18:40:12
 tags:
 ---

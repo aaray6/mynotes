@@ -1,5 +1,5 @@
 ---
-title: docker
+title: Docker notes
 date: 2018-02-27 21:59:50
 tags:
 ---
@@ -74,3 +74,13 @@ WORKDIR /usr/src/app
 VOLUME /usr/src/app
 CMD [ "/usr/src/app/make.sh" ]
 ```
+
+## dizao
+
+1. build
+2. compose
+3. run
+4. install node.js
+5. npminstall
+6. node addxxxx.js
+7. node addxxxx.js
