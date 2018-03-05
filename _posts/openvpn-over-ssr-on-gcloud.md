@@ -7,11 +7,28 @@ tags:
 
 ## apply VPC (google cloud compute engine)
 
+First, you need to access Google :)
+
+[Google Cloud](https://cloud.google.com)
+[Google Cloud console](https://console.cloud.google.com/home)
+
+Click `Compute Engine`
+![gcloud console](../myimages/gcloud_console02.png)
+Create new instance
+![gcloud console](../myimages/gcloud_console03.png)
+![gcloud console](../myimages/gcloud_console04.png)
+
 ## shadowsocks server
+
+Refer to [this post](https://github.com/Alvin9999/new-pac/wiki/%E8%87%AA%E5%BB%BAss%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%99%E7%A8%8B)
 
 ## PC (install lubuntu on eeepc901)
 
+Some notes about [lubuntu on eeepc901](lubuntu-eeepc901.md)
+
 ## shadowsocks client
+
+Refer to [this post](https://github.com/Alvin9999/new-pac/wiki/%E8%87%AA%E5%BB%BAss%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%99%E7%A8%8B)
 
 ## server side openvpn
 
@@ -42,9 +59,123 @@ update /etc/sysctl.conf
 
 ### server F/W (ufw)
 
+[How To Set Up an OpenVPN Server on Debian 8](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-debian-8) Step 4 — Install and Configure ufw
+
+```console
+apt-get install ufw
+ufw allow ssh
+
+myaccount@instance-1:/etc/openvpn$ sudo ufw status
+Status: active
+To                         Action      From
+--                         ------      ----
+22                         ALLOW       Anywhere
+1194/udp                   ALLOW       Anywhere
+443                        ALLOW       Anywhere
+80                         ALLOW       Anywhere
+22                         ALLOW       Anywhere (v6)
+1194/udp                   ALLOW       Anywhere (v6)
+443                        ALLOW       Anywhere (v6)
+80                         ALLOW       Anywhere (v6)
+myaccount@instance-1:/etc/openvpn$ sudo ufw allow 2295/tcp
+Rule added
+Rule added (v6)
+myaccount@instance-1:/etc/openvpn$ sudo ufw allow 2295/udp
+Rule added
+Rule added (v6)
+myaccount@instance-1:/etc/openvpn$ sudo ufw status
+Status: active
+To                         Action      From
+--                         ------      ----
+22                         ALLOW       Anywhere
+1194/udp                   ALLOW       Anywhere
+443                        ALLOW       Anywhere
+80                         ALLOW       Anywhere
+2295/tcp                   ALLOW       Anywhere
+2295/udp                   ALLOW       Anywhere
+22                         ALLOW       Anywhere (v6)
+1194/udp                   ALLOW       Anywhere (v6)
+443                        ALLOW       Anywhere (v6)
+80                         ALLOW       Anywhere (v6)
+2295/tcp                   ALLOW       Anywhere (v6)
+2295/udp                   ALLOW       Anywhere (v6)
+```
+
+update `/etc/default/ufw`
+
+```console
+DEFAULT_FORWARD_POLICY="DROP"
+```
+
+This must be changed from DROP to ACCEPT. It should look like this when done:
+
+```console
+DEFAULT_FORWARD_POLICY="ACCEPT"
+```
+
+update `/etc/ufw/before.rules`
+
+```console
+#
+# rules.before
+#
+# Rules that should be run before the ufw command line added rules. Custom
+# rules should be added to one of these chains:
+#   ufw-before-input
+#   ufw-before-output
+#   ufw-before-forward
+#
+
+# START OPENVPN RULES
+# NAT table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+# Allow traffic from OpenVPN client to eth0
+-A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE
+COMMIT
+# END OPENVPN RULES
+
+# Don't delete these required lines, otherwise there will be errors
+*filter
+```
+
+enable it
+
+```console
+ufw enable
+```
+
 ### gcloud F/W (gcloud)
 
+By default, gcloud only open 80 and 443 port. If we need to open more ports, can use following commands
+
+```console
+gcloud compute firewall-rules list
+gcloud compute firewall-rules create my-allow-openvpn --allow tcp:2295,udp:2295 --description="openvpn"
+```
+
+![gcloud console](../myimages/gcloud_console01.png)
+[gcloud compute firewall-rules](https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules/)
+
+```console
+gcloud compute firewall-rules create <rule-name> --allow tcp:9090 --source-tags=<list-of-your-instances-names> --source-ranges=0.0.0.0/0 --description="<your-description-here>"
+```
+
+delete rule
+
+```console
+gcloud compute firewall-rules delete my-allow-openvpn
+```
+
+Test port by openssl command
+
+```console
+openssl s_client -connect 1.2.3.4:2295
+```
+
 ### client openvpn
+
+[How To Set Up an OpenVPN Server on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-16-04)
 
 #### server side prepare
 
@@ -220,15 +351,207 @@ Sat Feb 24 23:05:00 2018 Initialization Sequence Completed
 
 ### additional function, set PC as router
 
+### Shadowsocks over KCPTUN
+
+[KCPTUN](https://github.com/xtaci/kcptun)
+[SS over KCP](https://gist.github.com/WispZhan/656b88bb866f39d5bee6450513c5f6bd)
+
+* install kcptun on server side
+
+download [build release](https://github.com/xtaci/kcptun/releases). Find the package for your system. [kcptun-linux-amd64-20171201.tar.gz](https://github.com/xtaci/kcptun/releases/download/v20171201/kcptun-linux-amd64-20171201.tar.gz), get the URL link `https://github.com/xtaci/kcptun/releases/download/v20171201/kcptun-linux-amd64-20171201.tar.gz`
+
+```console
+mkdir -p ~/tool/kcptun
+cd ~/tool/kcptun
+wget https://github.com/xtaci/kcptun/releases/download/v20171201/kcptun-linux-amd64-20171201.tar.gz
+tar xzvf kcptun-linux-amd64-20171201.tar.gz
+```
+
+create `server-config.json` file as following content.
+localaddr is the kcptun listen port. remoteaddr is the shadowsocks ip:port.
+
+```json
+{
+"localaddr": ":4443",
+"remoteaddr": "1.2.3.4:443",
+"key": "passwordofkcptun",
+"crypt": "salsa20",
+"mode": "fast",
+"conn": 1,
+"autoexpire": 60,
+"mtu": 1350,
+"sndwnd": 128,
+"rcvwnd": 1024,
+"datashard": 5,
+"parityshard": 5,
+"dscp": 46,
+"nocomp": true,
+"acknodelay": false,
+"nodelay": 0,
+"interval": 40,
+"resend": 0,
+"nc": 0,
+"sockbuf": 4194304,
+"keepalive": 10
+}
+```
+
+create `start.sh` as following.
+
+```bash
+#!/bin/bash
+cd /home/realuser/tool/kcptun/
+./server_linux_amd64 -c ./server-config.json > kcptun.log 2>&1 &
+echo "Kcptun started."
+```
+
+create `stop.sh` as following.
+
+```bash
+#!/bin/bash
+echo "Stopping Kcptun..."
+PID=`ps -ef | grep server_linux_amd64 | grep -v grep | awk '{print $2}'`
+if [ "" !=  "$PID" ]; then
+echo "killing $PID"
+kill -9 $PID
+fi
+echo "Kcptun stoped."
+```
+
+make `*.sh` executable.
+
+```console
+chmod +x *.sh
+```
+
+make kcptun autostart on server
+
+add following in `/etc/rc.local` before `exit 0`
+
+```bash
+/home/realuser/tool/kcptun/start.sh &
+```
+
+* server firewall
+
+open port on server if server has firewall enabled.
+
+```console
+sudo ufw allow 4443
+```
+
+* VPS firewall (google cloud)
+
+KCP uses UDP protocol usually. Run following commands on gcloud console.
+
+```console
+gcloud compute firewall-rules list
+gcloud compute firewall-rules create my-allow-kcp --allow tdp:4443,udp:4443 --description="kcptun"
+```
+
+* install kcptun on client side
+
+Linux client (ubuntu 16.04 x64)
+
+```console
+mkdir -p ~/tool/kcptun
+cd ~/tool/kcptun
+wget https://github.com/xtaci/kcptun/releases/download/v20171201/kcptun-linux-amd64-20171201.tar.gz
+tar xzvf kcptun-linux-amd64-20171201.tar.gz
+```
+
+create `client-config.json` file as following content.
+localaddr is the kcptun listen port on local. remoteaddr is the remote kcptun server ip:port. Others should be same as server.
+
+```json
+{
+"localaddr": ":4443",
+"remoteaddr": "1.2.3.4:4443",
+"key": "passwordofkcptun",
+"crypt": "salsa20",
+"mode": "fast",
+"conn": 1,
+"autoexpire": 60,
+"mtu": 1350,
+"sndwnd": 128,
+"rcvwnd": 1024,
+"datashard": 5,
+"parityshard": 5,
+"dscp": 46,
+"nocomp": true,
+"acknodelay": false,
+"nodelay": 0,
+"interval": 40,
+"resend": 0,
+"nc": 0,
+"sockbuf": 4194304,
+"keepalive": 10
+}
+```
+
+create `start.sh` as following.
+
+```bash
+#!/bin/bash
+cd /home/realuser/tool/kcptun/
+./client_linux_amd64 -c ./client-config.json > kcptun.log 2>&1 &
+echo "Kcptun started."
+```
+
+create `stop.sh` as following.
+
+```bash
+#!/bin/bash
+echo "Stopping Kcptun..."
+PID=`ps -ef | grep client_linux_amd64 | grep -v grep | awk '{print $2}'`
+if [ "" !=  "$PID" ]; then
+echo "killing $PID"
+kill -9 $PID
+fi
+echo "Kcptun stoped."
+```
+
+make `*.sh` executable.
+
+```console
+chmod +x *.sh
+```
+
+make kcptun autostart on server
+
+add following in `/etc/rc.local` before `exit 0`
+
+```bash
+/home/realuser/tool/kcptun/start.sh &
+```
+
+Other client please refer to [this post](https://gist.github.com/WispZhan/656b88bb866f39d5bee6450513c5f6bd)
+
+* update shadowsocks client configuration file and restart shadowsocks
+
+```json
+"server": "127.0.0.1",
+"server_port": 4443,
+...
+```
+
 ### how to make other PC use the router
 
 #### simple way, the PC can set default gateway
 
+TODO
+
 #### the PC don't have permission to update default gateway
+
+TODO
 
 ##### set wifi as AP
 
-##### use 2nd router's DHCP
+TODO
+
+##### use 2nd router's
+
+TODO
 
 ### Reference
 
