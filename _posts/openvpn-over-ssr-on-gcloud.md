@@ -13,10 +13,10 @@ First, you need to access Google :)
 [Google Cloud console](https://console.cloud.google.com/home)
 
 Click `Compute Engine`
-![gcloud console](../myimages/gcloud_console02.png)
+![gcloud console](/myimages/gcloud_console02.png)
 Create new instance
-![gcloud console](../myimages/gcloud_console03.png)
-![gcloud console](../myimages/gcloud_console04.png)
+![gcloud console](/myimages/gcloud_console03.png)
+![gcloud console](/myimages/gcloud_console04.png)
 
 ## shadowsocks server
 
@@ -154,7 +154,7 @@ gcloud compute firewall-rules list
 gcloud compute firewall-rules create my-allow-openvpn --allow tcp:2295,udp:2295 --description="openvpn"
 ```
 
-![gcloud console](../myimages/gcloud_console01.png)
+![gcloud console](/myimages/gcloud_console01.png)
 [gcloud compute firewall-rules](https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules/)
 
 ```console
@@ -211,7 +211,7 @@ Please enter the following 'extra' attributes
 to be sent with your certificate request
 A challenge password []:
 An optional company name []:
-Using configuration from /home/aaray21cn/openvpn-ca/openssl-1.0.0.cnf
+Using configuration from /home/<xxxxxxxx>/openvpn-ca/openssl-1.0.0.cnf
 Check that the request matches the signature
 Signature ok
 The Subject's Distinguished Name is as follows

@@ -21,7 +21,7 @@ git remote -v
 ## change remote URL (from https to ssh or from ssh to https)
 
 get the URL
-![img](../myimages/git_repository_url.png)
+![img](/myimages/git_repository_url.png)
 
 ```console
 git remote set-url origin <remote-URL>

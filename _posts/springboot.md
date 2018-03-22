@@ -11,4 +11,4 @@ tags:
 
 [Tool to generate base framework](https://start.spring.io/)
 
-![Spring Boot Start](../myimages/springboot_start.png)
+![Spring Boot Start](/myimages/springboot_start.png)

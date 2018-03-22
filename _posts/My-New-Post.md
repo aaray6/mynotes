@@ -44,7 +44,7 @@ Content Cell | Content Cell  | Content Cell
 
 ---
 
-![本地图片](../myimages/th.jpeg "纸飞机")
+![本地图片](/myimages/th.jpeg "纸飞机")
 
 参考:
 [Hexo + github 打造个人博客](http://www.cnblogs.com/fengzheng/p/8031518.html)
