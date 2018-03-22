@@ -84,3 +84,19 @@ CMD [ "/usr/src/app/make.sh" ]
 5. npminstall
 6. node addxxxx.js
 7. node addxxxx.js
+
+## Dockerfile for gradle and springboot
+
+### gradle sample
+
+[Dockerfile](https://github.com/aaray6/mytest/blob/master/mygradeltest/Dockerfile)
+
+### gradle springboot sample
+
+[Springboot with gradle image](https://github.com/aaray6/mytest/tree/master/mysprintboottest2)
+
+[Springboot with jdk image, base gradlew](https://github.com/aaray6/mytest/tree/master/mysprintboottest)
+
+[official gradle docker image](https://hub.docker.com/_/gradle/)
+
+[official gradle docker image Dockerfile](https://github.com/keeganwitt/docker-gradle/blob/1fcbfdaa2566e3cf3fb055fbd1342f2aa462bb85/jdk8-alpine/Dockerfile)
