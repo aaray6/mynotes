@@ -330,3 +330,124 @@ echo ""
 ```console
 sudo ./nfc-cloner.sh
 ```
+
+## 各种UID卡
+
+M1 卡
+普通IC卡，0扇区不可以修改，其他扇区可反复擦写，我们使用的电梯卡、门禁卡等智能卡发卡商所使用的都是 M1 卡，可以理解为物业发的原卡。
+
+UID 卡
+普通复制卡，可以重复擦写所有扇区，主要应用在IC卡复制上，遇到带有防火墙的读卡器就会失效。
+
+CUID 卡
+可擦写防屏蔽卡，可以重复擦写所有扇区，UID卡复制无效的情况下使用，可以绕过防火墙。
+
+FUID 卡
+不可擦写防屏蔽卡，此卡的特点0扇区只能写入一次，写入一次变成 M1 卡，CUID 复制没用的情况下使用，可以绕过防火墙。
+
+UFUID 卡
+高级复制卡，我们就理解为是 UID 和 FUID 的合成卡，需要封卡操作，不封卡就是 UID 卡，封卡后就变为 M1 卡。
+
+经测试,我用的读卡器配合libnfc相关工具，可以复制UID,CUID卡，其他卡没测试
+
+## libnfc相关工具
+
+对于写过一次的UID卡，再次写入会遇到以下异常
+
+```console
+Writing 64 blocks |nfc_initiator_transceive_bytes: Mifare Authentication Error
+nfc_initiator_transceive_bytes: Mifare Authentication Error
+nfc_initiator_transceive_bytes: Mifare Authentication Error
+nfc_initiator_transceive_bytes: Mifare Authentication Error
+nfc_initiator_transceive_bytes: Mifare Authentication Error
+nfc_initiator_transceive_bytes: Mifare Authentication Error
+nfc_initiator_transceive_bytes: Mifare Authentication Error
+nfc_initiator_transceive_bytes: Mifare Authentication Error
+nfc_initiator_transceive_bytes: Mifare Authentication Error
+```
+
+这是因为空白卡用的KEY都是00000000,FFFFFFFFFFFF,复制过之后KEY就不是默认的了
+
+其中一个最简单的解决办法是重新格式化成空白卡
+
+先用mfoc破解得到dump文件
+sudo mfoc -O dump
+再用mifare-classic-format命令和dump文件把卡格式化成空白卡
+sudo mifare-classic-format dump
+
+注1:mifare-classic-format可以通过以下命令安装
+sudo apt install libfreefare-bin
+
+注2:如果你已经知道卡的KEY，可以在mfoc命令里加上-f KnownKeys.txt参数
+
+KnownKeys.txt文件格式如下
+
+```text
+B8527F9427A4
+013940233313
+```
+
+```console
+sudo mfoc -f KnownKeys.txt -O dump
+sudo mifare-classic-format dump
+```
+
+## 合并卡
+
+我有两个卡，一个门禁一个电梯。门禁系统只用到了最后4个扇区，而且还没用到卡ID。另外一个电梯系统恰巧没用到最后4个扇区。
+
+所以我把门禁dump文件最后4个扇区的内容替换到电梯dump文件最后4个扇区。把新dump文件写到卡里就得到了一个合并的卡。
+
+注意: dump文件是1024字节的16进制文件。Windows下编辑可以用HxD编辑器。Linux下可以用bless编辑器。Windows下的notepad++加hexeditor插件打开dump文件显示内容可能是编码有问题。Linux下vi配合:%!xxd也有同样问题。但是用xxd命令直接显示dump文件则正确。
+
+## Linux下往空白卡写dump文件
+
+> [Clone MiFare cards using chinesse UUID writable cards](https://gist.github.com/alphazo/3303282)
+
+- Dump the blank chinese card card to get the keys
+
+```console
+# mfoc -f KnownKeys.txt -O blank-chinese.dmp
+```
+
+- Dump the Mifare card your want to copy
+
+```console
+# mfoc -f KnownKeys.txt -O cardtocopy.dmp
+```
+
+- Write the Chinese card with the content of the other card including UUID
+
+```console
+# nfc-mfclassic w b cardtocopy.dmp blank-chinese.dmp
+or
+# nfc-mfclassic w a cardtocopy.dmp blank-chinese.dmp
+```
+
+cardtocopy.dmp可以是已经准备好的dump文件
+
+- Check that the card is the same
+
+```console
+sudo nfc-list
+[sudo] quxr 的密码： 
+nfc-list uses libnfc 1.7.1
+NFC device: pn532_uart:/dev/ttyUSB0 opened
+1 ISO14443A passive target(s) found:
+ISO/IEC 14443A (106 kbps) target:
+    ATQA (SENS_RES): 00  04  
+       UID (NFCID1): 8d  69  08  31  
+      SAK (SEL_RES): 08  
+```
+
+- Go back to blank card
+
+跟格式化步骤相同，区别在于这个有cardtocopy.dmp文件提供KEY,另外那个是用mfoc现破解
+
+```console
+# nfc-mfclassic w b blank-chinese.dmp cardtocopy.dmp
+or
+# nfc-mfclassic w a blank-chinese.dmp cardtocopy.dmp
+```
+
+经比较，这个Linux下的命令与Windows下提供的软件做出来的卡内容相同。
