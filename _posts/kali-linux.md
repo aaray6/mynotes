@@ -73,3 +73,90 @@ sudo apt-get install ttf-wqy-zenhei
 
 > [Kali之——kali精简版安装后中文乱码](https://blog.csdn.net/l1028386804/article/details/83107900)
 > [kali linux系统中文乱码问题的解决](https://blog.csdn.net/qq_29343201/article/details/51880719)
+
+## add new user by root and add sudo group
+
+```console
+# useradd newuser
+# /sbin/usermod -a -G sudo newuser
+# passwd newuser
+
+```
+
+## wordlist
+
+> [SecLists](https://github.com/danielmiessler/SecLists)
+
+### Install
+
+** Zip **
+
+```console
+wget -c https://github.com/danielmiessler/SecLists/archive/master.zip -O SecList.zip \
+  && unzip SecList.zip \
+  && rm -f SecList.zip
+```
+
+** Git (Small) **
+
+```console
+git clone --depth 1 https://github.com/danielmiessler/SecLists.git
+```
+
+** Git (Complete) **
+
+```console
+git clone git@github.com:danielmiessler/SecLists.git
+```
+
+** Kali Linux **
+([Tool Page](https://tools.kali.org/password-attacks/seclists))
+
+```console
+apt -y install seclists
+```
+
+## Kali Linux install VirtualBox addition fails
+
+Both VirtualBox 5.2.x and 6.0.x addition show error message
+
+```console
+VirtualBox Guest Additions: modprobe vboxsf failed
+```
+
+The /var/log/vboxadd-setup.log shows
+
+```console
+/tmp/vbox.0/utils.c: In function ‘sf_init_inode’:
+/tmp/vbox.0/utils.c:165:28: error: passing argument 1 of ‘sf_ftime_from_timespec’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+     sf_ftime_from_timespec(&inode->i_atime, &info->AccessTime);
+                            ^~~~~~~~~~~~~~~
+/tmp/vbox.0/utils.c:53:53: note: expected ‘struct timespec *’ but argument is of type ‘struct timespec64 *’
+ static void sf_ftime_from_timespec(struct timespec *tv, RTTIMESPEC *ts)
+
+```
+
+Reason is the new Kali linux kernal version is 4.19.x, the virtualbox addtion utils.c code has issue from kernal version 4.18
+
+** solution **
+
+Download the Development version addition iso (5.2.97 and 6.0.29). Use this Addition iso. The issue is fixed in latest development version.
+
+[Virtualbox download page](https://www.virtualbox.org/wiki/Testbuilds#Developmentsnapshots)
+
+[VBoxGuestAdditions_6.0.97-128917.iso for VirtualBox6.0.x](https://www.virtualbox.org/download/testcase/VBoxGuestAdditions_6.0.97-128917.iso). So far (2019.02.21), I install latest VirtualBox6.0.4, the Addition in the package doesn't work. 6.0.97 Addition works.
+
+> [topic](https://forums.virtualbox.org/viewtopic.php?f=3&t=89455)
+> [topic, Simon South's answer](https://superuser.com/questions/1268741/virtualbox-ubuntu-guest-additions-not-installing-modprobe-vboxsf-failed)
+> [ticket](https://www.virtualbox.org/ticket/17981)
+
+## How to upgrade VirtualBox from 5.2 to 6.0
+
+> [VirtualBox 6.0 Is Out — Here’s How To Install / Upgrade On Ubuntu 16.04 / 18.04 / 18.10](https://websiteforstudents.com/virtualbox-6-0-is-out-heres-how-to-install-upgrade-on-ubuntu-16-04-18-04-18-10/)
+
+Use following command to get current Virtualbox version
+
+```console
+$ vboxmanage --version
+6.0.4r128413
+```
