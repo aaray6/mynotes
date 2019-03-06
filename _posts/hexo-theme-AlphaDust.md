@@ -25,7 +25,7 @@ menu:
 default_post_title: mynote
 
 # Archive Date Format
-archive_date_format: MMM YYYY
+archive_date_format: YYYY-MM-DD
 
 # Comments.
 comments:
@@ -48,7 +48,7 @@ email_url: aaray@21cn.com
 #rss_url: \#
 
 # Footer About Text
-footer_about: "<a href=\"about.html\">I love games</a>"
+footer_about: "<a href=\"/about.html\">I love games</a>"
 
 # Footer Copyright Line
 footer_copyright: "Copyleft"

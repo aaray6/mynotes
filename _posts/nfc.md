@@ -402,6 +402,18 @@ sudo mifare-classic-format dump
 
 ## Linux下往空白卡写dump文件
 
+### 格式化（如果卡不是空白卡，需要格式化）
+
+```console
+sudo nfc-mfsetuid -f
+```
+
+or
+
+```console
+sudo nfc-mfclassic f A blank-chinese.dmp keyfile.mfd f
+```
+
 > [Clone MiFare cards using chinesse UUID writable cards](https://gist.github.com/alphazo/3303282)
 
 - Dump the blank chinese card card to get the keys
@@ -418,10 +430,16 @@ sudo mifare-classic-format dump
 
 - Write the Chinese card with the content of the other card including UUID
 
+The W option allows writing of special MIFARE cards that can be 'unlocked' to allow  block 0 to be overwritten. This includes UID and manufacturer data. Take care when amending UIDs to set the correct BCC (UID checksum). Currently only 4 byte UIDs are supported.
+
+If use "w", the block 0 will not be overwritten. Need to do extra step to set the UID.
+
+f      Force using the keyfile KEYS even if UID does not match (optional).
+
 ```console
-# nfc-mfclassic w b cardtocopy.dmp blank-chinese.dmp
+# nfc-mfclassic W b cardtocopy.dmp blank-chinese.dmp f
 or
-# nfc-mfclassic w a cardtocopy.dmp blank-chinese.dmp
+# nfc-mfclassic W a cardtocopy.dmp blank-chinese.dmp f
 ```
 
 cardtocopy.dmp可以是已经准备好的dump文件
@@ -445,9 +463,24 @@ ISO/IEC 14443A (106 kbps) target:
 跟格式化步骤相同，区别在于这个有cardtocopy.dmp文件提供KEY,另外那个是用mfoc现破解
 
 ```console
-# nfc-mfclassic w b blank-chinese.dmp cardtocopy.dmp
+# nfc-mfclassic w b blank-chinese.dmp cardtocopy.dmp f
 or
-# nfc-mfclassic w a blank-chinese.dmp cardtocopy.dmp
+# nfc-mfclassic w a blank-chinese.dmp cardtocopy.dmp f
 ```
 
 经比较，这个Linux下的命令与Windows下提供的软件做出来的卡内容相同。
+
+## some commands
+
+- Get the "to-be-copied" card UID
+
+```console
+# nfc-anticol|grep UID|awk '{print $2}'
+01234567
+```
+
+- Write UID into the card
+
+```console
+# nfc-mfsetuid 01234567
+```

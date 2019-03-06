@@ -543,11 +543,37 @@ TODO
 
 #### the PC don't have permission to update default gateway
 
-TODO
-
 ##### set wifi as AP
 
-TODO
+Need following CreateAP tool
+
+> [CreateAP](https://github.com/oblique/create_ap)
+
+start_ov_ss.sh
+
+```bash
+#!/bin/bash
+
+#echo start kcptun
+#/home/quxr/tool/kcptun/start.sh
+
+echo start ssr
+sudo /root/tool/ssr start
+
+echo connect openvpn
+sudo openvpn --config /home/quxr/client1.ovpn &
+
+echo sleeping 15s
+sleep 15
+
+echo set iptables
+sudo iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE
+sudo iptables -A FORWARD -i tun0 -o enp3s0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A FORWARD -i enp3s0 -o tun0 -j ACCEPT
+
+echo start AP RAY_901
+sudo create_ap wlp1s0 enp3s0 RAY_901 THE_WIFI_PASSWORD &
+```
 
 ##### use 2nd router's
 
