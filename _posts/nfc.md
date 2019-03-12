@@ -428,18 +428,61 @@ sudo nfc-mfclassic f A blank-chinese.dmp keyfile.mfd f
 # mfoc -f KnownKeys.txt -O cardtocopy.dmp
 ```
 
-- Write the Chinese card with the content of the other card including UUID
-
-The W option allows writing of special MIFARE cards that can be 'unlocked' to allow  block 0 to be overwritten. This includes UID and manufacturer data. Take care when amending UIDs to set the correct BCC (UID checksum). Currently only 4 byte UIDs are supported.
-
-If use "w", the block 0 will not be overwritten. Need to do extra step to set the UID.
-
-f      Force using the keyfile KEYS even if UID does not match (optional).
+- 普通UID卡，可以直接复制64块(block),包括卡号和厂商信息
 
 ```console
 # nfc-mfclassic W b cardtocopy.dmp blank-chinese.dmp f
 or
 # nfc-mfclassic W a cardtocopy.dmp blank-chinese.dmp f
+```
+
+- CUID卡，需要分两步，先写63块，再写卡号
+
+1. 复制63块
+
+```console
+# nfc-mfclassic w b cardtocopy.dmp blank-chinese.dmp f
+or
+# nfc-mfclassic w a cardtocopy.dmp blank-chinese.dmp f
+```
+
+2. 复制卡号
+
+Get the "to-be-copied" card UID
+
+```console
+# nfc-anticol|grep UID|awk '{print $2}'
+01234567
+```
+
+Write UID into the card
+
+```console
+# nfc-mfsetuid 01234567
+```
+
+> The W option allows writing of special MIFARE cards that can be 'unlocked' to allow  block 0 to be overwritten. This includes UID and manufacturer data. Take care when amending UIDs to set the correct BCC (UID checksum). Currently only 4 byte UIDs are supported.
+
+> If use "w", the block 0 will not be overwritten. Need to do extra step to set the UID.
+
+> f      Force using the keyfile KEYS even if UID does not match (optional).
+
+如果用W复制CUID卡，回出现以下提示
+
+```console
+# nfc-mfclassic W b tobecopied.dmp blank-chinese.dmp f
+NFC reader: pn532_uart:/dev/ttyUSB0 opened
+Expected MIFARE Classic card with UID starting as: 8d690831
+Got card with UID starting as:                     a0b0e18a
+Found MIFARE Classic card:
+ISO/IEC 14443A (106 kbps) target:
+    ATQA (SENS_RES): 00  04  
+       UID (NFCID1): a0  b0  e1  8a  
+      SAK (SEL_RES): 08  
+Guessing size: seems to be a 1024-byte card
+Sent bits:     50  00  57  cd  
+Sent bits:     40 (7 bits)
+unlock failure!
 ```
 
 cardtocopy.dmp可以是已经准备好的dump文件
@@ -468,19 +511,4 @@ or
 # nfc-mfclassic w a blank-chinese.dmp cardtocopy.dmp f
 ```
 
-经比较，这个Linux下的命令与Windows下提供的软件做出来的卡内容相同。
-
-## some commands
-
-- Get the "to-be-copied" card UID
-
-```console
-# nfc-anticol|grep UID|awk '{print $2}'
-01234567
-```
-
-- Write UID into the card
-
-```console
-# nfc-mfsetuid 01234567
-```
+经比较，这个Linux下的命令与Windows下提供的软件做出来的UID卡内容相同,CUID除了厂商信息其他都可以复制。
