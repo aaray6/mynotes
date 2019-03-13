@@ -20,7 +20,7 @@ tags:
 
 以下记录Linux(ubuntu)下找到的方法
 
-# Ubuntu Linux下用NFC reader破解复制M1卡
+## Ubuntu Linux下用NFC reader破解复制M1卡
 
 linux自带了PL2303驱动，插上读卡器后用lsusb命令可以看到
 ”Bus 001 Device 018: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port“
@@ -60,7 +60,7 @@ NFC device: pn532_uart:/dev/ttyUSB0 opened
 
 ```
 
-## libnfc安装遇到的问题
+### libnfc安装遇到的问题
 
 - /etc/nfc/libnfc.conf
 需要把最后两行注释去掉
@@ -77,13 +77,14 @@ sudo apt install libnfc-bin
 ```
 
 另外，需要安装libnfc-dev包，因为一会编译mfoc需要用到，mfoc在apt里找不到安装包，需要自己编译
+
 ```console
 sudo apt install libnfc-dev
 ```
 
 [libnfc](https://github.com/nfc-tools/libnfc)
 
-## 安装mfoc
+### 安装mfoc
 
 [mfoc](https://github.com/nfc-tools/mfoc)
 
@@ -97,13 +98,13 @@ autoreconf -is
 make && sudo make install
 ```
 
-## 安装 libnfc-examples
+### 安装 libnfc-examples
 
 ```console
 sudo apt install libnfc-examples
 ```
 
-## nfc-cloner脚本
+### nfc-cloner脚本
 
 [nfc-cloner视频教程(youtube)](https://www.youtube.com/watch?v=c0Qsmgvj_oo)
 
@@ -438,7 +439,7 @@ or
 
 - CUID卡，需要分两步，先写63块，再写卡号
 
-1. 复制63块
+- 1- 复制63块
 
 ```console
 # nfc-mfclassic w b cardtocopy.dmp blank-chinese.dmp f
@@ -446,7 +447,7 @@ or
 # nfc-mfclassic w a cardtocopy.dmp blank-chinese.dmp f
 ```
 
-2. 复制卡号
+- 2- 复制卡号
 
 Get the "to-be-copied" card UID
 
@@ -462,12 +463,10 @@ Write UID into the card
 ```
 
 > The W option allows writing of special MIFARE cards that can be 'unlocked' to allow  block 0 to be overwritten. This includes UID and manufacturer data. Take care when amending UIDs to set the correct BCC (UID checksum). Currently only 4 byte UIDs are supported.
-
 > If use "w", the block 0 will not be overwritten. Need to do extra step to set the UID.
-
 > f      Force using the keyfile KEYS even if UID does not match (optional).
 
-如果用W复制CUID卡，回出现以下提示
+如果用W复制CUID卡，会出现以下提示
 
 ```console
 # nfc-mfclassic W b tobecopied.dmp blank-chinese.dmp f

@@ -6,7 +6,7 @@ tags:
 
 Google gcloud平台安装V2Ray,设置防火墙，设置动态DNS
 
-**一定不用忘记打开Linux本身的防火墙ufw**
+注:**一定不用忘记打开Linux本身的防火墙ufw**
 
 # gcloud firewall
 
@@ -138,7 +138,7 @@ Then make it executable, i.e run
 
 ## 安装V2Ray
 
->[V2Ray Install](https://www.v2ray.com/chapter_00/install.html)
+> [V2Ray Install](https://www.v2ray.com/chapter_00/install.html)
 
 在Debian服务器上root权限执行以下命令
 
@@ -158,7 +158,7 @@ service v2ray start
 
 之后可以使用 service v2ray start|stop|status|reload|restart|force-reload 控制 V2Ray 的运行。
 
-**Linux(ubuntu)客户端安装方法跟服务器相同**
+注:**Linux(ubuntu)客户端安装方法跟服务器相同**
 
 ## 配置V2Ray
 

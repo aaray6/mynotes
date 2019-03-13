@@ -51,5 +51,6 @@ Content Cell | Content Cell  | Content Cell
 [Hexo doc](https://hexo.io/docs/index.html)
 [Hexo theme Next](https://github.com/theme-next)
 [Markdown syntax](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf)
+[Markdown 语法介绍](https://coding.net/help/doc/project/markdown.html)
 
 结束

@@ -6,18 +6,18 @@ tags:
 
 # Metasploit
 
-* 测试用的被攻击Linux虚拟机镜像下载
+## 测试用的被攻击Linux虚拟机镜像下载
 
 > [Metasploitable](https://sourceforge.net/projects/metasploitable/)
 
-* start msconsole
+## start msconsole
 
 ```console
 service postgresql start
 msconsole
 ```
 
-* IRC on Metasploitable
+## IRC on Metasploitable
 
 Kali Linux: 192.168.56.100
 Metasploitable: 192.168.56.101
@@ -36,11 +36,11 @@ run
 
 Can connect to 192.168.56.101 with root account
 
-* Modules
+## Modules
 
 > [Metasploit系列教程第一季](https://www.bilibili.com/video/av16925201)
 
-1. Port scan
+### Port scan
 
 ```console
 # nmap -v -sV 192.168.56.101
@@ -53,7 +53,7 @@ set RHOSTS 192.168.56.101
 run
 ```
 
-2. SMB scan for windows system information
+### SMB scan for windows system information
 
 ```console
 search smb_version
@@ -62,7 +62,7 @@ set RHOSTS 192.168.56.101
 run
 ```
 
-3. 服务识别
+### 服务识别
 
 ```console
 search ssh_version
@@ -76,13 +76,13 @@ search ftp_version
 use auxiliary/scanner/ftp/ftp_version
 ```
 
-4. Sniffer
+### Sniffer
 
 auxiliary/sniffer/psnuffle
 
 TODO
 
-* 测试用的被攻击Windows 2008
+## 测试用的被攻击Windows 2008
 
 > [Metasploitable3](https://github.com/rapid7/metasploitable3)
 

@@ -6,11 +6,13 @@ tags:
 
 # IBM X201 Linux （ubuntu) 记录
 
-- xxd, HEX editor
+[X201过热](#X201过热)； [指纹登录](#指纹登录)； [更换启动界面](#更换启动界面)； [修复分区表和GRUB引导](#不小心把分区表弄坏了); [休眠](#Ubuntu18-04休眠)
 
-- Linux Baidu Pan [Post](https://segmentfault.com/a/1190000015719430)
+## xxd - Linux HEX editor
 
-- X201过热
+## [Linux Baidu Pan](https://segmentfault.com/a/1190000015719430)
+
+## X201过热
 
 安装以下软件，Linux比安装之前降温10度左右
 
@@ -19,7 +21,7 @@ thermald
 TLP
 intel-ucode
 
-## TLP
+### TLP
 
 ```console
 sudo add-apt-repository ppa:linrunner/tlp
@@ -37,19 +39,19 @@ sudo tlp start
 sudo tlp-stat
 ```
 
-## thermald
+### thermald
 
 ```console
 sudo apt-get install thermald
 ```
 
-## CPU freqs
+### CPU freqs
 
 ```console
 sudo apt-get install indicator-cpufreq
 ```
 
-- 指纹登录
+## 指纹登录
 
 ```console
 ## For Ubuntu 16.04 or greater:
@@ -61,16 +63,35 @@ sudo apt-get install libfprint0 fprint-demo libpam-fprintd gksu-polkit
 ## After that, you can test it by running fprint_demo and save the fingerprint with fprintd-enroll. This will automatically make your login screen require a finger swipe instead of a password.
 ```
 
-- 更换启动界面
+## 更换启动界面
+
+> [How to change boot splash screen in 18.04](https://askubuntu.com/questions/1046370/how-to-change-boot-splash-screen-in-18-04)
+> [Plymouth Themes](https://www.gnome-look.org/browse/cat/108/)
+
+to install:
+
+1. copy file to /usr/share/plymouth/themes
+
+2. run in terminal:
 
 ```console
-## 测试命令
+sudo update-alternatives --install /usr/share/plymouth/themes/default.plymouth default.plymouth /usr/share/plymouth/themes/<your theme>/<your theme>.plymouth 100
+sudo update-alternatives --config default.plymouth
+sudo update-initramfs -u
+```
+
+> initramfs: initramfs is a tiny version of the OS that gets loaded by the bootloader, right after the kernel. It lives in RAM, and it provides *just* enough tools and instructions to tell the kernel how to set up the real filesystem, mount the HDD read/write, and start loading all the system services. It includes the stub of init, PID #1. If your initramfs is broken, your boot fails.
+> update-initramfs is a script that updates initramfs to work with a new kernel. In the Debian universe, you shouldn't need to run this command manually except under very unusual circumstances - a post-install script automatically handles it for you when you install a new kernel package.
+
+### 测试命令
+
+```console
 sudo apt install plymouth-x11
 
 sudo plymouthd ; sudo plymouth --show-splash ; for ((I=0; I<10; I++)); do sleep 1 ; sudo plymouth --update=test$I ; done ; sudo plymouth --quit
 ```
 
-- 不小心把分区表弄坏了
+## 不小心把分区表弄坏了
 
 1. 先别慌，别往硬盘里写东西
 
@@ -87,25 +108,24 @@ sudo apt-get install -y boot-repair
 boot-repair
 ```
 
-- Ubuntu18.04休眠(我按照以下方法有时候能恢复，有时候不成功)
+## Ubuntu18.04休眠
 
-如果用固态硬盘，不应该使用休眠功能，否则影响固态硬盘寿命
+注意**如果用固态硬盘，不应该使用休眠功能，否则影响固态硬盘寿命**
 
-1. 先确定交换分区至少跟物理内存一样大。
+- 1 先确定交换分区至少跟物理内存一样大。
 
 理论上交换分区小于物理内存也可以成功。而且最好比物理内存大一点。（我就是在扩展交换分区大小时把分区表弄坏的，花了半天的时间才恢复原样）
 
 > [Add ‘Hibernate’ Option in Power Menu in Ubuntu 18.04](http://ubuntuhandbook.org/index.php/2018/05/add-hibernate-option-ubuntu-18-04/)
-
 > [How can I hibernate on Ubuntu 16.04](https://askubuntu.com/questions/768136/how-can-i-hibernate-on-ubuntu-16-04)
 
-1. 测试系统支持休眠，注意，以下命令回立刻将系统休眠，执行前请确保已经保存你的工作。
+- 2 测试系统支持休眠，注意，以下命令回立刻将系统休眠，执行前请确保已经保存你的工作。
 
 ```console
 sudo systemctl hibernate
 ```
 
-2. 在菜单上增加休眠按钮
+- 3 在菜单上增加休眠按钮
 
 ```console
 sudo nano /etc/polkit-1/localauthority/50-local.d/com.ubuntu.enable-hibernate.pkla
@@ -127,7 +147,7 @@ ResultActive=yes
 
 Restart your computer and click the link to install the gnome extension: **Hibernate Status Button**.(第一个参考帖子里有截图)
 
-3. 修改GRUB增加resume参数
+- 4 修改GRUB增加resume参数
 
 找到交换分区:
 
@@ -149,7 +169,9 @@ sudoedit /etc/default/grub
 
 To the line starting **GRUB_CMDLINE_LINUX_DEFAULT** add **resume=/dev/YourSwapPartition** to the section in quotes (replace with the the partition you identified earlier). Using my example:
 
-**GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=/dev/sda3"**
+```text
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=/dev/sda3"
+```
 
 更新/etc/default/grub文件之后，运行以下命令更新grub以使之生效
 
@@ -157,26 +179,77 @@ To the line starting **GRUB_CMDLINE_LINUX_DEFAULT** add **resume=/dev/YourSwapPa
 sudo update-grub
 ```
 
-**除了像上面使用交换分区，还可以使用交换文件实现休眠功能**
+注： **除了像上面使用交换分区，还可以使用交换文件实现休眠功能**
 
-- 修改启动画面
+### 我了扩大扩展分区，我重新创建了扩展分区，导致分区号和UUID都变了，于是需要用以下方法重新设置
 
-> [How to change boot splash screen in 18.04](https://askubuntu.com/questions/1046370/how-to-change-boot-splash-screen-in-18-04)
+> [I have enabled hibernate but it isn't working. What can I do?](https://askubuntu.com/questions/196364/i-have-enabled-hibernate-but-it-isnt-working-what-can-i-do)
 
-> [Plymouth Themes](https://www.gnome-look.org/browse/cat/108/)
+以下方法在Ubuntu18.04测试有效
 
-to install:
+There is two way to fix this.
 
-1. copy file to /usr/share/plymouth/themes
+- Editing the /etc/initramfs-tools/conf.d/resume file
 
-2. run in terminal:
+    First get the UUID of the swap partition.
 
-```console
-sudo update-alternatives --install /usr/share/plymouth/themes/default.plymouth default.plymouth /usr/share/plymouth/themes/<your theme>/<your theme>.plymouth 100
-sudo update-alternatives --config default.plymouth
-sudo update-initramfs -u
-```
+    ```console
+     sudo blkid | grep swap
+    ```
 
-initramfs: initramfs is a tiny version of the OS that gets loaded by the bootloader, right after the kernel. It lives in RAM, and it provides *just* enough tools and instructions to tell the kernel how to set up the real filesystem, mount the HDD read/write, and start loading all the system services. It includes the stub of init, PID #1. If your initramfs is broken, your boot fails.
+    This will output a line similar to this:
 
-update-initramfs is a script that updates initramfs to work with a new kernel. In the Debian universe, you shouldn't need to run this command manually except under very unusual circumstances - a post-install script automatically handles it for you when you install a new kernel package.
+    ```console
+    /dev/sda12: UUID="a14f3380-810e-49a7-b42e-72169e66c432" TYPE="swap"
+    ```
+
+    The actually line will not match with this. Copy the value of UUID in between "..." double quote.
+
+    Open the resume file
+
+    ```console
+    sudo gedit /etc/initramfs-tools/conf.d/resume
+    ```
+
+    And in that file, add a line like this
+
+    ```text
+    RESUME=UUID=a14f3380-810e-49a7-b42e-72169e66c432
+    ```
+
+    Don't forget to replace the actual UUID value you get from step 1. Save the file and exit gedit
+
+    Then in terminal, execute this command
+
+    ```console
+    sudo update-initramfs -u
+    ```
+
+You will now be able to resume from hibernation
+
+- Editing the /etc/default/grub file.
+
+    Open a terminal and execute the below command to open it
+
+    ```console
+    sudo gedit /etc/default/grub 
+    ```
+
+    There will be a line like GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+    . Edit the line to insert RESUME=UUID=<your-uuid-value-here\> after the word splash.
+
+    For example in my case, the line looks like this after editing
+
+    ```text
+     GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=UUID=a14f3380-810e-49a7-b42e-72169e66c432" 
+    ```
+
+    Make sure, you used your UUID value you get from sudo blkid | grep swap command.
+
+    Then do this command
+
+    ```console
+     sudo update-grub
+    ```
+
+This also enable you to successfully get resumed from hibernate.

@@ -22,13 +22,13 @@ Modeline "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hs
 Next, declare a new resolution mode.
 
 ```console
-$ sudo xrandr --newmode "1920x1080_60.00" 173.00 1920 2048 2248 2576 1080 1083 1088 1120 -hsync +vsync
+sudo xrandr --newmode "1920x1080_60.00" 173.00 1920 2048 2248 2576 1080 1083 1088 1120 -hsync +vsync
 ```
 
 Next, find out the name of your video device.
 
 ```console
-$ sudo xrandr -q
+sudo xrandr -q
 Screen 0: minimum 320 x 200, current 1280 x 1568, maximum 8192 x 8192
 LVDS-1 connected primary 1280x800+0+768 (normal left inverted right x axis y axis) 261mm x 163mm
    1280x800      60.16*+  59.99    59.97    59.81    59.91    50.00  
