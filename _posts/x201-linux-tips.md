@@ -181,7 +181,9 @@ sudo update-grub
 
 注： **除了像上面使用交换分区，还可以使用交换文件实现休眠功能**
 
-### 我了扩大扩展分区，我重新创建了扩展分区，导致分区号和UUID都变了，于是需要用以下方法重新设置
+### 在我重新创建了交换分区后，交换分区号和UUID都变了，于是需要用以下方法重新设置
+
+注:**我曾经试过不用休眠功能，于是我把/etc/initramfs-tools/conf.d/resume文件删了，删掉后，Linux启动特别慢，内核启动大概10多秒，恢复这个文件并更新ramfs之后，变回3秒之内**
 
 > [I have enabled hibernate but it isn't working. What can I do?](https://askubuntu.com/questions/196364/i-have-enabled-hibernate-but-it-isnt-working-what-can-i-do)
 
@@ -253,3 +255,50 @@ You will now be able to resume from hibernation
     ```
 
 This also enable you to successfully get resumed from hibernate.
+
+### 更改Login登录界面背景
+
+> [How to Change the Ubuntu Login screen](https://vitux.com/how-to-change-login-lock-screen-background-in-ubuntu/)
+
+```console
+sudo gedit /usr/share/gnome-shell/theme/ubuntu.css
+```
+
+替换lockDialogGroup段如下
+
+```css
+#lockDialogGroup {
+background: #2c001e url(file:///usr/share/backgrounds/gdmlock.jpg);
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+}
+```
+
+Alt-F2 -> r
+
+### 电脑挂起后，禁用鼠标唤醒
+
+>[鼠标移动唤醒计算机从挂起如何禁用这里操作？](https://www.helplib.com/ubuntu/article_157796)
+
+```console
+$ ls -l /lib/systemd/system-sleep
+-rwxr-xr-x 1 root root  92 2月  22  2018 hdparm
+-rwxr-xr-x 1 root root 212 3月  27 17:36 mouse_logitech
+-rwxr-xr-x 1 root root 219 2月  21 21:58 unattended-upgrades
+
+$ cat /lib/systemd/system-sleep/mouse_logitech
+#!/bin/sh
+if [! -r /sys/devices/pci0000:00/0000:00:1d.0/usb2/2-1/2-1.2/power/wakeup ]; then
+ exit 0
+fi
+case"$1" in
+ pre )
+ echo disabled > /sys/devices/pci0000:00/0000:00:1d.0/usb2/2-1/2-1.2/power/wakeup
+;;
+esac
+```
+
+### 用[CloneZilla](https://clonezilla.org/)拷贝硬盘/分区
+
+有linux的分区用Ghost复制后不好用，不知道是不是我用的版本太老了。用CloneZilla好用。下载iso，做启动盘，启动，复制
