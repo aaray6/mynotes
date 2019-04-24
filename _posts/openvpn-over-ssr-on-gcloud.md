@@ -577,7 +577,7 @@ sudo create_ap wlp1s0 enp3s0 RAY_901 THE_WIFI_PASSWORD &
 
 ##### use 2nd router's
 
-TODO
+[2nd router](/2019/04/23/lede-lubuntu-eeepc901/#关于旁路由)
 
 ### Reference
 
