@@ -3,7 +3,6 @@ title: git notes
 date: 2018-02-27 23:04:10
 tags:
 ---
-# git notes
 
 ## Adding an existing project to GitHub using the command line
 
