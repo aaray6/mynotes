@@ -3,7 +3,6 @@ title: Hexo notes
 date: 2018-02-27 23:22:57
 tags:
 ---
-# Hexo notes
 
 ## some commands
 
@@ -14,3 +13,7 @@ hexo g
 hexo s
 hexo d
 ```
+
+g - generate
+s - server
+d - deploy

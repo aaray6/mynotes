@@ -1,9 +1,8 @@
 ---
-title: NFC Notes
+title: NFC笔记
 date: 2019-02-11 10:16:17
 tags:
 ---
-# NFC笔记
 
 在淘宝上买了一个IC卡复制工具
 
