@@ -3,7 +3,6 @@ title: Docker notes
 date: 2018-02-27 21:59:50
 tags:
 ---
-# Docker notes
 
 ## check node:latest system version
 

@@ -3,7 +3,6 @@ title: install lubuntu on eeepc901
 date: 2018-02-24 18:40:12
 tags:
 ---
-# My notes for installing lubuntu on eeepc901
 
 ## How to show GRUB memu if it skips
 

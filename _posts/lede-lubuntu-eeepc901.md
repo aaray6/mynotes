@@ -1,9 +1,8 @@
 ---
-title: lede_lubuntu_eeepc901
+title: LEDE & Lubuntu on eeepc901
 date: 2019-04-23 17:53:04
 tags:
 ---
-# LEDE & Lubuntu on eeepc901
 
 install LEDE and Lubuntu dual-boot on eeepc901
 

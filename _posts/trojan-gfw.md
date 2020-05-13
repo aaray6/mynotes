@@ -52,9 +52,9 @@ IMPORTANT NOTES:
    Donating to EFF:                    https://eff.org/donate-le
 ```
 
-> **/etc/letsencrypt/live/xyz.ddnsfree.com/fullchain.pem**
-> **/etc/letsencrypt/live/xyz.ddnsfree.com/privkey.pem**
-> **certbot-auto renew**
+**/etc/letsencrypt/live/xyz.ddnsfree.com/fullchain.pem**
+**/etc/letsencrypt/live/xyz.ddnsfree.com/privkey.pem**
+**certbot-auto renew**
 
 ### 配置trojan服务器
 

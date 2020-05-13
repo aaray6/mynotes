@@ -1,10 +1,8 @@
 ---
-title: IBM X201 Linux tips
+title: IBM X201 Linux (ubuntu) 记录
 date: 2019-03-09 13:55:09
 tags:
 ---
-
-# IBM X201 Linux （ubuntu) 记录
 
 [X201过热](#X201过热)； [指纹登录](#指纹登录)； [更换启动界面](#更换启动界面)； [修复分区表和GRUB引导](#不小心把分区表弄坏了); [休眠](#Ubuntu18-04休眠)
 

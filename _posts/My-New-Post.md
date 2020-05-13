@@ -3,7 +3,6 @@ title: My New Post
 date: 2018-02-24 13:59:50
 tags:
 ---
-# This is my new Post
 
 参考[Markdown语法介绍](https://coding.net/help/doc/project/markdown.html)实验了一些makrdown语法。用hexo解析放到github上。
 

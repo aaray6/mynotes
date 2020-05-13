@@ -4,7 +4,7 @@ date: 2019-02-22 09:59:29
 tags:
 ---
 
-# Kali Linux破解WPA/WPA2 Wifi密码
+## Kali Linux破解WPA/WPA2 Wifi密码
 
 > [Kali Linux使用Aircrack破解wifi密码(wpa/wpa2)](http://topspeedsnail.com/kali-linux-crack-wifi-wpa/)
 > [How To Hack WPA/WPA2 Wi-Fi With Kali Linux & Aircrack-ng](http://lewiscomputerhowto.blogspot.com/2014/06/how-to-hack-wpawpa2-wi-fi-with-kali.html)
@@ -20,11 +20,11 @@ Notes:
 
 * 如果对方密码不在字典里，也足够复杂，那就不用指望能破解出来了，所以这个要看运气
 
-# Kali Metasploit
+## Kali Metasploit
 
 [Metasploit](/2019/02/27/metasploit/)
 
-# apt package
+## apt package
 
 * netstat
 

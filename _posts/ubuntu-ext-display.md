@@ -1,10 +1,8 @@
 ---
-title: ubuntu18.04双显示器
+title: ubuntu18.04双显示器配置
 date: 2019-02-27 13:57:57
 tags:
 ---
-
-# ubuntu18.04双显示器配置
 
 环境Thinkpad x201, ubuntu18.04, 外接显示器1920x1080, VGA接口
 

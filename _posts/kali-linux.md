@@ -4,8 +4,6 @@ date: 2019-02-20 14:33:34
 tags:
 ---
 
-# Kali Linux Notes
-
 Install Kali Linux on VirtualBox. The host is ubuntu
 
 Set 1G memory and 2 CPUs.

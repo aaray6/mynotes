@@ -1,9 +1,8 @@
 ---
-title: openvpn over ssr on gcloud
+title: How to setup OpenVPN over ssr on gcloud
 date: 2018-02-24 19:03:50
 tags:
 ---
-# How to setup OpenVPN over ssr on gcloud
 
 ## apply VPC (google cloud compute engine)
 

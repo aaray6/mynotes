@@ -8,8 +8,6 @@ Google gcloud平台安装V2Ray,设置防火墙，设置动态DNS
 
 注:**一定不用忘记打开Linux本身的防火墙ufw**
 
-# gcloud firewall
-
 >[使用防火墙规则](https://cloud.google.com/vpc/docs/using-firewalls)
 
 首先创建规则，创建一个从外面可以访问50443端口的规则my-allow-v2ray

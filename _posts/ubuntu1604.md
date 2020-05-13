@@ -1,9 +1,8 @@
 ---
-title: ubuntu 16.04 notes
+title: Tips for Ubuntu 16.04
 date: 2018-03-01 09:15:57
 tags:
 ---
-# Tips for Ubuntu 16.04
 
 ## Browser to support Java
 
