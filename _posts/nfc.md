@@ -12,6 +12,10 @@ tags:
 
 带了Windows版的软件和驱动
 
+2020-05-28更新，最开始的软件有序列号，过期了。厂家更新了一个新的不需要序列号的软件。
+
+下载[NFC小黑3.0(1909)链接: https://pan.baidu.com/s/13G_Sgu1j_h_LzgJXgDvJwg](https://pan.baidu.com/s/13G_Sgu1j_h_LzgJXgDvJwg)  密码: eqc0
+
 ![软件](/myimages/nfc_02_windowssoftware.png)
 
 带的软件里有libnfc.dll, mfoc.dll两个文件。驱动程序就是一个"Prolific Technology, Inc. PL2303 Serial Port“ USB转串口驱动。读卡器是USB接口的，安装驱动之后映射岛了COM3。
