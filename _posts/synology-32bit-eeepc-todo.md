@@ -34,7 +34,52 @@ VBoxManage convertfromraw --format VDI NB_x86_5024_DSM_50-4528_Xpenology_nl.img 
 
 ## eeepc901安装
 
-TODO，因为安装没有意义，所以以后再说。
+因为安装了也没有意义，所以没真正安装。
+
+用img文件制作启动U盘
+找了个1G TF卡,插上后用命令
+sudo fdisk -l
+获得U盘是/dev/sdb
+
+```console
+sudo fdisk -l
+...
+Disk /dev/sdb：971.5 MiB，1018691584 字节，1989632 个扇区
+单元：扇区 / 1 * 512 = 512 字节
+扇区大小(逻辑/物理)：512 字节 / 512 字节
+I/O 大小(最小/最佳)：512 字节 / 512 字节
+磁盘标签类型：dos
+磁盘标识符：0x00468ae6
+```
+
+用dd命令写入img
+
+```console
+$ sudo dd bs=512 if=NB_x86_5024_DSM_50-4528_Xpenology_nl.img of=/dev/sdb && sync
+记录了65536+0 的读入
+记录了65536+0 的写出
+33554432 bytes (34 MB, 32 MiB) copied, 7.17033 s, 4.7 MB/s
+```
+
+把U盘和网线插到eeepc901上，开机按ESC，选择U盘启动。剩下的跟在虚拟机类似。
+
+WIFI可能是不能驱动，所以必须插网线，启动后在屏幕上有IP地址。也可以用其他方法。
+
+```console
+$ sudo nmap -sP 192.168.1.1/26
+
+Starting Nmap 7.60 ( https://nmap.org ) at 2020-05-30 14:51 CST
+...
+Nmap scan report for 192.168.1.14
+Host is up (-0.066s latency).
+MAC Address: 00:22:15:XX:XX:XX (Asustek Computer)
+...
+Nmap done: 64 IP addresses (6 hosts up) scanned in 31.87 seconds
+```
+
+或者浏览器打开 http://find.synology.com/ ， 可以找到eeepc901,然后根据向导安装。
+
+后续步骤不试了。
 
 ## 参考
 

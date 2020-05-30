@@ -8,12 +8,13 @@ install LEDE and Lubuntu dual-boot on eeepc901
 
 ## 1. install lubuntu on /dev/sdb
 
+参考这里[install lubuntu on eeepc901](/2018/02/24/lubuntu-eeepc901/)
+
 ## 2. 假设/dev/sda是空的，安装LEDE到/dev/sda上
 
 ### download LEDE x86
 
-https://www.right.com.cn/forum/thread-252795-1-1.html
-https://pan.baidu.com/s/1gfmuJOB 提取码:f33q
+链接: https://pan.baidu.com/s/159Ph4Pi-VpXV3bcAlDDUTg  密码: gg9e
 
 得到文件LEDE-17.01.2-R7.3.3-x86-combined-squashfs.rar
 解压得到LEDE-17.01.2-R7.3.3-x86-combined-squashfs.img
