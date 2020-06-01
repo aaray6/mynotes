@@ -98,6 +98,8 @@ v10.7.0
 
 于是，按照以上步骤，先卸载node,再找到最新的node版本，然后安装node和npm,顺便把yarn也装上了。yarn是可以代替npm的一个包管理工具。
 
+注意**不能安装nodejs14.x,因为hexo部署会出错,需要安装13.x**
+
 ```console
 $ curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 
@@ -184,11 +186,11 @@ $ sudo apt-get install -y nodejs
 正在解包 nodejs (14.3.0-1nodesource1) ...
 正在设置 nodejs (14.3.0-1nodesource1) ...
 正在处理用于 man-db (2.8.3-2ubuntu0.1) 的触发器 ...
-quxr@quxr-ThinkPad-X201:/$ curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+xxxx@xxxx-ThinkPad-X201:/$ curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 OK
-quxr@quxr-ThinkPad-X201:/$      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+xxxx@xxxx-ThinkPad-X201:/$      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 deb https://dl.yarnpkg.com/debian/ stable main
-quxr@quxr-ThinkPad-X201:/$      sudo apt-get update && sudo apt-get install yarn
+xxxx@xxxx-ThinkPad-X201:/$      sudo apt-get update && sudo apt-get install yarn
 命中:1 http://archive.ubuntukylin.com:10006/ubuntukylin xenial InRelease       
 命中:2 https://packages.microsoft.com/repos/vscode stable InRelease                                                              
 命中:3 http://download.virtualbox.org/virtualbox/debian bionic InRelease                                                                   
@@ -221,15 +223,15 @@ N: 鉴于仓库 'http://download.virtualbox.org/virtualbox/debian bionic InRelea
 正准备解包 .../archives/yarn_1.22.4-1_all.deb  ...
 正在解包 yarn (1.22.4-1) ...
 正在设置 yarn (1.22.4-1) ...
-quxr@quxr-ThinkPad-X201:/$ which node
+xxxx@xxxx-ThinkPad-X201:/$ which node
 /usr/bin/node
-quxr@quxr-ThinkPad-X201:/$ which npm
+xxxx@xxxx-ThinkPad-X201:/$ which npm
 /usr/bin/npm
-quxr@quxr-ThinkPad-X201:/$ which yarn
+xxxx@xxxx-ThinkPad-X201:/$ which yarn
 /usr/bin/yarn
-quxr@quxr-ThinkPad-X201:/$ nodejs -v
+xxxx@xxxx-ThinkPad-X201:/$ nodejs -v
 v14.3.0
-quxr@quxr-ThinkPad-X201:/$ node -v
+xxxx@xxxx-ThinkPad-X201:/$ node -v
 v14.3.0
 ```
 
@@ -678,6 +680,218 @@ local_search:
 ```
 
 完成
+
+## Hexo用nodejs14.x部署出错,替换位nodejs13.x
+
+事情竟然还没完，尽管本地正常，但是我部署的时候，出现了以下错误。
+
+```console
+$ hexo d
+INFO  Deploying: git
+INFO  Clearing .deploy_git folder...
+INFO  Copying files from public folder...
+FATAL Something's wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html
+TypeError [ERR_INVALID_ARG_TYPE]: The "mode" argument must be integer. Received an instance of Object
+    at copyFile (fs.js:1895:10)
+    at tryCatcher (/home/xxxx/dev/blog/node_modules/bluebird/js/release/util.js:16:23)
+    at ret (eval at makeNodePromisifiedEval (/usr/local/lib/node_modules/hexo-cli/node_modules/bluebird/js/release/promisify.js:184:12), <anonymous>:13:39)
+    at /home/xxxx/dev/blog/node_modules/hexo-deployer-git/node_modules/hexo-fs/lib/fs.js:181:12
+    at tryCatcher (/home/xxxx/dev/blog/node_modules/bluebird/js/release/util.js:16:23)
+    at Promise._settlePromiseFromHandler (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:547:31)
+    at Promise._settlePromise (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:604:18)
+    at Promise._settlePromise0 (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:649:10)
+    at Promise._settlePromises (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:729:18)
+    at Promise._fulfill (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:673:18)
+    at Promise._resolveCallback (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:466:57)
+    at Promise._settlePromiseFromHandler (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:559:17)
+    at Promise._settlePromise (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:604:18)
+    at Promise._settlePromise0 (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:649:10)
+    at Promise._settlePromises (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:729:18)
+    at Promise._fulfill (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:673:18)
+    at Promise._resolveCallback (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:466:57)
+    at Promise._settlePromiseFromHandler (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:559:17)
+    at Promise._settlePromise (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:604:18)
+    at Promise._settlePromise0 (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:649:10)
+    at Promise._settlePromises (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:729:18)
+    at Promise._fulfill (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:673:18)
+```
+
+Google的结果是最新的nodejs版本的问题，那么重新做一遍，这次换成13.x试试。
+
+### 先卸载
+
+```console
+sudo apt remove --purge nodejs npm
+sudo apt clean
+sudo apt autoclean
+sudo apt install -f
+sudo apt autoremove
+```
+
+### 再安装13
+
+```console
+curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+yarn就不用重新装了。结果如下
+
+```console
+$ curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+
+## Installing the NodeSource Node.js 13.x repo...
+
+
+## Populating apt-get cache...
+
++ apt-get update
+命中:1 https://packages.microsoft.com/repos/vscode stable InRelease            
+命中:2 https://deb.nodesource.com/node_14.x bionic InRelease                   
+获取:3 http://archive.ubuntukylin.com:10006/ubuntukylin xenial InRelease [18.1 kB]
+命中:4 http://repo.steampowered.com/steam precise InRelease                    
+命中:5 https://dl.yarnpkg.com/debian stable InRelease  
+命中:6 http://download.virtualbox.org/virtualbox/debian bionic InRelease       
+命中:7 http://cn.archive.ubuntu.com/ubuntu bionic InRelease                    
+获取:8 http://cn.archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]  
+获取:9 http://cn.archive.ubuntu.com/ubuntu bionic-updates/main amd64 DEP-11 Metadata [305 kB]
+获取:10 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]  
+命中:11 http://ppa.launchpad.net/linrunner/tlp/ubuntu bionic InRelease         
+获取:12 http://cn.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 DEP-11 Metadata [273 kB]
+获取:13 http://cn.archive.ubuntu.com/ubuntu bionic-updates/multiverse amd64 DEP-11 Metadata [2,468 B]
+获取:14 http://security.ubuntu.com/ubuntu bionic-security/main amd64 DEP-11 Metadata [42.6 kB]
+获取:15 http://security.ubuntu.com/ubuntu bionic-security/universe amd64 DEP-11 Metadata [42.1 kB]
+获取:16 http://security.ubuntu.com/ubuntu bionic-security/multiverse amd64 DEP-11 Metadata [2,464 B]
+已下载 863 kB，耗时 12秒 (69.8 kB/s)                                           
+正在读取软件包列表... 完成
+N: 鉴于仓库 'https://packages.microsoft.com/repos/vscode stable InRelease' 不支持 'i386' 体系结构，跳过配置文件 'main/binary-i386/Packages' 的获取。
+N: 鉴于仓库 'http://download.virtualbox.org/virtualbox/debian bionic InRelease' 不支持 'i386' 体系结构，跳过配置文件 'contrib/binary-i386/Packages' 的获取。
+
+## Confirming "bionic" is supported...
+
++ curl -sLf -o /dev/null 'https://deb.nodesource.com/node_13.x/dists/bionic/Release'
+
+## Adding the NodeSource signing key to your keyring...
+
++ curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+OK
+
+## Creating apt sources list file for the NodeSource Node.js 13.x repo...
+
++ echo 'deb https://deb.nodesource.com/node_13.x bionic main' > /etc/apt/sources.list.d/nodesource.list
++ echo 'deb-src https://deb.nodesource.com/node_13.x bionic main' >> /etc/apt/sources.list.d/nodesource.list
+
+## Running `apt-get update` for you...
+
++ apt-get update
+命中:1 http://archive.ubuntukylin.com:10006/ubuntukylin xenial InRelease
+获取:2 https://deb.nodesource.com/node_13.x bionic InRelease [4,584 B]         
+命中:3 http://cn.archive.ubuntu.com/ubuntu bionic InRelease                    
+命中:4 http://security.ubuntu.com/ubuntu bionic-security InRelease             
+命中:5 http://repo.steampowered.com/steam precise InRelease                    
+命中:6 https://packages.microsoft.com/repos/vscode stable InRelease            
+命中:7 http://ppa.launchpad.net/linrunner/tlp/ubuntu bionic InRelease          
+命中:8 http://cn.archive.ubuntu.com/ubuntu bionic-updates InRelease            
+命中:9 http://download.virtualbox.org/virtualbox/debian bionic InRelease       
+命中:10 https://dl.yarnpkg.com/debian stable InRelease                         
+获取:11 https://deb.nodesource.com/node_13.x bionic/main amd64 Packages [765 B]
+已下载 5,349 B，耗时 3秒 (1,830 B/s)                        
+正在读取软件包列表... 完成
+N: 鉴于仓库 'https://packages.microsoft.com/repos/vscode stable InRelease' 不支持 'i386' 体系结构，跳过配置文件 'main/binary-i386/Packages' 的获取。
+N: 鉴于仓库 'http://download.virtualbox.org/virtualbox/debian bionic InRelease' 不支持 'i386' 体系结构，跳过配置文件 'contrib/binary-i386/Packages' 的获取。
+
+## Run `sudo apt-get install -y nodejs` to install Node.js 13.x and npm
+## You may also need development tools to build native addons:
+     sudo apt-get install gcc g++ make
+## To install the Yarn package manager, run:
+     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+     sudo apt-get update && sudo apt-get install yarn
+
+
+$ sudo apt-get install -y nodejs
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+下列【新】软件包将被安装：
+  nodejs
+升级了 0 个软件包，新安装了 1 个软件包，要卸载 0 个软件包，有 28 个软件包未被升级。
+需要下载 24.3 MB 的归档。
+解压缩后会消耗 117 MB 的额外空间。
+获取:1 https://deb.nodesource.com/node_13.x bionic/main amd64 nodejs amd64 13.14.0-1nodesource1 [24.3 MB]
+已下载 24.3 MB，耗时 9秒 (2,716 kB/s)                                          
+正在选中未选择的软件包 nodejs。
+(正在读取数据库 ... 系统当前共安装有 327991 个文件和目录。)
+正准备解包 .../nodejs_13.14.0-1nodesource1_amd64.deb  ...
+正在解包 nodejs (13.14.0-1nodesource1) ...
+正在设置 nodejs (13.14.0-1nodesource1) ...
+正在处理用于 man-db (2.8.3-2ubuntu0.1) 的触发器 ...
+$ nodejs -v
+v13.14.0
+$ yarn -v
+1.22.4
+$ npm -v
+6.14.4
+```
+
+### 修复node-sass
+
+其他的东西也不需要重装。但是运行hexo clean的时候报错，根据提示运行npm rebuild node-sass命令
+
+```cosole
+$ hexo clean
+ERROR Plugin load failed: hexo-renderer-sass
+Error: Missing binding /home/xxxx/dev/blog/node_modules/node-sass/vendor/linux-x64-79/binding.node
+Node Sass could not find a binding for your current environment: Linux 64-bit with Node.js 13.x
+
+Found bindings for the following environments:
+  - Linux 64-bit with Node.js 14.x
+
+This usually happens because your environment has changed since running `npm install`.
+Run `npm rebuild node-sass` to download the binding for your current environment.
+    at module.exports (/home/xxxx/dev/blog/node_modules/node-sass/lib/binding.js:15:13)
+    at Object.<anonymous> (/home/xxxx/dev/blog/node_modules/node-sass/lib/index.js:14:35)
+    at Module._compile (internal/modules/cjs/loader.js:1118:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1138:10)
+    at Module.load (internal/modules/cjs/loader.js:982:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:875:14)
+    at Module.require (internal/modules/cjs/loader.js:1022:19)
+    at require (internal/modules/cjs/helpers.js:72:18)
+    at Object.<anonymous> (/home/xxxx/dev/blog/node_modules/hexo-renderer-sass/lib/renderer.js:3:12)
+    at Module._compile (internal/modules/cjs/loader.js:1118:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1138:10)
+    at Module.load (internal/modules/cjs/loader.js:982:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:875:14)
+    at Module.require (internal/modules/cjs/loader.js:1022:19)
+    at require (/home/xxxx/dev/blog/node_modules/hexo/lib/hexo/index.js:219:21)
+    at /home/xxxx/dev/blog/node_modules/hexo-renderer-sass/index.js:4:20
+    at /home/xxxx/dev/blog/node_modules/hexo/lib/hexo/index.js:232:12
+    at tryCatcher (/home/xxxx/dev/blog/node_modules/bluebird/js/release/util.js:16:23)
+    at Promise._settlePromiseFromHandler (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:547:31)
+    at Promise._settlePromise (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:604:18)
+    at Promise._settlePromise0 (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:649:10)
+    at Promise._settlePromises (/home/xxxx/dev/blog/node_modules/bluebird/js/release/promise.js:729:18)
+INFO  Deleted database.
+$ npm rebuild node-sass
+
+> node-sass@4.14.1 install /home/xxxx/dev/blog/node_modules/node-sass
+> node scripts/install.js
+
+Downloading binary from https://github.com/sass/node-sass/releases/download/v4.14.1/linux-x64-79_binding.node
+Download complete  ] - :
+Binary saved to /home/xxxx/dev/blog/node_modules/node-sass/vendor/linux-x64-79/binding.node
+Caching binary to /home/xxxx/.npm/node-sass/4.14.1/linux-x64-79_binding.node
+
+> node-sass@4.14.1 postinstall /home/xxxx/dev/blog/node_modules/node-sass
+> node scripts/build.js
+
+Binary found at /home/xxxx/dev/blog/node_modules/node-sass/vendor/linux-x64-79/binding.node
+Testing binary
+Binary is fine
+node-sass@4.14.1 /home/xxxx/dev/blog/node_modules/node-sass
+```
+
+最后终于可以用了。
 
 ## 其他
 
