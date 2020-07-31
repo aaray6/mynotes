@@ -77,3 +77,7 @@ adb shell settings delete global global_http_proxy_port
 sudo systemctl restart snap.anbox.container-manager.service
 
 都设完后，就可以打开anbox中的Google Play登录了
+
+### 命令行使用privoxy
+
+export http_proxy=http://127.0.0.1:8118 && curl ip.gs
