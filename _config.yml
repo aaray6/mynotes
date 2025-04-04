@@ -70,7 +70,8 @@ pagination_dir: page
 #theme: alpha-dust
 #theme: hexo-theme-light
 #theme: hexo-theme-Yin
-theme: melody
+#theme: melody
+theme: hexo-theme-melody-1.7.0
 
 # (quxr) for hexo-theme-type required plugin hexo-renderer-sass
 # to install hexo-renderer-sass, run below in ~/dev/blog folder
