@@ -19,7 +19,7 @@ cd dev
 git clone https://github.com/aaray6/mynotes.git
 cd mynotes
 npm install
-npm install hexo-renderer-pug hexo-renderer-stylus
+npm install hexo-renderer-pug hexo-renderer-stylus hexo-deployer-git
 ```
 
 ## build & test
