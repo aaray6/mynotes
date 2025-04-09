@@ -137,6 +137,7 @@ bind_port = 7000
 参考[vaultwarden 用docker搭建vaultwarden(bitwarden)服务器](/2023/01/25/vaultwarden)中关于frp的部分
 
 创建/etc/systemd/system/frps.service文件
+
 ```service
 [Unit]
 Description=Frp Server Service
@@ -166,6 +167,7 @@ sudo systemctl start frps
 ### 修改100上的frpc.ini并重启frpc
 
 在/home/user/frp/frpc.ini文件添加如下内容
+
 ```ini
 [frps]
 type = tcp
@@ -175,6 +177,7 @@ remote_port = 7000
 ```
 
 重启
+
 ```console
 sudo systemctl restart frpc
 ```
@@ -206,6 +209,7 @@ remote_port = 4380
 frpc连接的是本机的7000端口。把10.0.0.127(04)的4380端口映射到服务器(100)的4380端口。
 
 创建/etc/systemd/system/frpc.service文件
+
 ```service
 # 1. put frpc and frpc.ini under /usr/local/frpc/
 # 2. put this file (frpc.service) at /etc/systemd/system
@@ -243,7 +247,9 @@ sudo systemctl start frpc
 
 ### 在内网100上设置nginx
 
-```/etc/nginx/sites-available/myproxy
+/etc/nginx/sites-available/myproxy
+
+```conf
 server {
 	listen 11443 ssl;
 	listen [::]:11443 ssl;
@@ -276,3 +282,27 @@ server {
 
 第1个11443是https的运行在100上的vaultwarden
 第2个80是运行在04上的dashy
+
+## frpc使用socks5代理
+
+frpc连接02服务器链路最近特别差，应该是02被过滤了。
+
+https://github.com/fatedier/frp/blob/dev/conf/frpc_full_example.toml#L92
+
+```ini
+# if you want to connect frps by http proxy or socks5 proxy or ntlm proxy, you can set proxyURL here or in global environment variables
+# it only works when protocol is tcp
+# transport.proxyURL = "http://user:passwd@192.168.1.128:8080"
+# transport.proxyURL = "socks5://user:passwd@192.168.1.128:1080"
+# transport.proxyURL = "ntlm://user:passwd@192.168.1.128:2080"
+```
+
+在100上运行v2rayA,然后配置frpc.ini为
+
+```ini
+[common]
+server_addr = <02 server>
+server_port = <02 frps port>
+transport.proxyURL = "socks5://127.0.0.1:20170"
+token = <02 token>
+```
